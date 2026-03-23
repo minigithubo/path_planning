@@ -79,6 +79,22 @@ body {
   width: 240px;
 }
 
+.text-input {
+  flex: 1;
+  min-width: 220px;
+  max-width: 560px;
+  background: #0b1220;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #e2e8f0;
+  outline: none;
+}
+
+.text-input:focus {
+  border-color: #38bdf8;
+}
+
 .legend {
   display: flex;
   flex-wrap: wrap;

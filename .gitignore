@@ -1,0 +1,21 @@
+# Node
+node_modules/
+package-lock.json
+
+# C++
+*.out
+a.out
+*.o
+
+# Mac
+.DS_Store
+
+# VSCode
+.vscode/
+
+# Logs
+*.log
+
+# build
+build/
+dist/

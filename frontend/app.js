@@ -1,3 +1,45 @@
+async function postPathFinding() {
+  const endpoint = "http://localhost:8080/path";
+
+  clearResultOnly();
+  state.status = "Calling backend...";
+  render();
+
+  const grid = [];
+  for (let r = 0; r < state.rows; r++) {
+    const row = [];
+    for (let c = 0; c < state.cols; c++) {
+      row.push(state.walls.has(keyOf(r, c)) ? 1 : 0);
+    }
+    grid.push(row);
+  }
+
+  const payload = {
+    start: [state.start.row, state.start.col],
+    end: [state.goal.row, state.goal.col],
+    grid,
+  };
+
+  try {
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    const data = await res.json();
+
+    state.path = data.path.map(([x, y]) => keyOf(x, y));
+    state.visited = [];
+    state.status = `Path received. Length: ${state.path.length - 1}`;
+    render();
+
+  } catch (err) {
+    state.status = "Backend error";
+    render();
+  }
+}
+
 const Tool = { WALL: "WALL", ERASE: "ERASE", START: "START", GOAL: "GOAL" };
 const initialState = {
   rows: 20,
@@ -217,7 +259,7 @@ function render() {
   document.getElementById("tool-erase").onclick = () => setActiveTool(Tool.ERASE);
   document.getElementById("tool-start").onclick = () => setActiveTool(Tool.START);
   document.getElementById("tool-goal").onclick = () => setActiveTool(Tool.GOAL);
-  document.getElementById("run-path").onclick = findPath;
+  document.getElementById("run-path").onclick = postPathFinding;
   document.getElementById("clear-path").onclick = () => {
     clearResultOnly();
     render();

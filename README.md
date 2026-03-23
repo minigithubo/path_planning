@@ -4,7 +4,7 @@ This is a React-based path planning UI that runs without `npm`.
 
 ## How to Run
 
-1. Open `path_planning/index.html` in your browser.
+1. Open `path_planning/frontend/index.html` in your browser (또는 로컬 서버 사용 권장).
 2. On the grid:
    - Use `Draw Obstacles` or `Erase Obstacles`
    - Use `Move Start` and `Move Goal`
