@@ -42,7 +42,7 @@ app.post("/path", (req, res) => {
   });
 
   // 👉 C++로 JSON 전달
-  process.stdin.write(inputJson);
+  process.stdin.write(inputJson + "\n");
   process.stdin.end();
 });
 

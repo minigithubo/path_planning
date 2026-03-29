@@ -30,8 +30,6 @@ vector<vector<int>> findpath(int starti, int startj, int endi, int endj,
     int m = grid[0].size();
 
     vector<vector<int>> dist(n, vector<int>(m, INT_MAX));
-
-    // ⭐ parent 추가
     vector<vector<pair<int,int>>> parent(n, vector<pair<int,int>>(m, {-1,-1}));
 
     priority_queue<Node, vector<Node>, greater<Node>> pq;
@@ -51,22 +49,7 @@ vector<vector<int>> findpath(int starti, int startj, int endi, int endj,
         int x = curr.x;
         int y = curr.y;
 
-        // ⭐ 도착하면 path 생성
-        if (x == endi && y == endj) {
-            vector<vector<int>> path;
-
-            int cx = endi, cy = endj;
-
-            while (cx != -1 && cy != -1) {
-                path.push_back({cx, cy});
-                auto p = parent[cx][cy];
-                cx = p.first;
-                cy = p.second;
-            }
-
-            reverse(path.begin(), path.end());
-            return path;
-        }
+        if (curr.g > dist[x][y]) continue;
 
         for (auto [dx, dy] : direction) {
             int nx = x + dx;
@@ -79,8 +62,6 @@ vector<vector<int>> findpath(int starti, int startj, int endi, int endj,
 
             if (new_g < dist[nx][ny]) {
                 dist[nx][ny] = new_g;
-
-                // ⭐ parent 기록
                 parent[nx][ny] = {x, y};
 
                 int f = new_g + heuristic(nx, ny, endi, endj);
@@ -89,7 +70,21 @@ vector<vector<int>> findpath(int starti, int startj, int endi, int endj,
         }
     }
 
-    return {}; // 경로 없음
+    // 🔥 while 끝난 후 경로 생성
+    vector<vector<int>> path;
+
+    int cx = endi, cy = endj;
+
+    while (cx != -1 && cy != -1) {
+        path.push_back({cx, cy});
+        auto p = parent[cx][cy];
+        cx = p.first;
+        cy = p.second;
+    }
+
+    reverse(path.begin(), path.end());
+
+    return path;
 }
 
 int main() {
@@ -112,7 +107,7 @@ int main() {
     json output;
     output["path"] = path;
 
-    cout << output.dump(4) << endl;
+    cout << output.dump() << endl;
 
     return 0;
 }
